@@ -32,6 +32,7 @@ export default function Index() {
   return (
     <>
       <Login/>
+      <p>While logged in users can read messages, only allowlisted users can write messages.</p>
       <RealtimeMessages serverMessages={messages}/>
       <Form method="post">
         <input type="text" name="message"></input>
