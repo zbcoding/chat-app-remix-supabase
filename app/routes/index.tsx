@@ -21,23 +21,28 @@ export const action = async ({request}: ActionArgs) => {
 export const loader = async ({request}: LoaderArgs) => {
   const response = new Response();
   const supabase = createServerSupabase({request, response});
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   const { data } = await supabase.from("messages").select();
-  return json({ messages: data ?? [] }, { headers: response.headers });
+  return json({ messages: data ?? [], session }, { headers: response.headers });
 }
 
 
 export default function Index() {
-  const { messages } = useLoaderData<typeof loader>();
+  const { messages, session } = useLoaderData<typeof loader>();
   const dataObject = JSON.stringify(messages, null, 2);
   return (
     <>
       <Login/>
       <p>While logged in users can read messages, only allowlisted users can write messages.</p>
       <RealtimeMessages serverMessages={messages}/>
+      
+      {session?.access_token && 
       <Form method="post">
         <input type="text" name="message"></input>
         <button type="submit">Send</button>
-      </Form>
+      </Form>}
     </>
   );
 }
