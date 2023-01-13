@@ -39,7 +39,7 @@ export default function Index() {
       <RealtimeMessages serverMessages={messages}/>
       
       {session?.access_token && 
-      <Form method="post">
+      <Form method="post" autoComplete="off" >
         <input type="text" name="message"></input>
         <button type="submit">Send</button>
       </Form>}
